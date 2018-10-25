@@ -32,7 +32,7 @@ class SecurityConfigurationPage(PageObject):
         appear when GH OAuth is selected, rather than the GH OAuth radio button,
         which has no unique CSS identifier
         """
-        return self.q(css='[name="_.githubWebUri"]').present
+        return self.q(css='[name="_.githubWebUri"]').visible
 
     def get_user_permissions(self, user):
         """

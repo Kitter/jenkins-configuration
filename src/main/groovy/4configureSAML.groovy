@@ -32,16 +32,7 @@ try {
 
 samlConfigs = yaml.load(configText)
 
-// The IDP Metadata XML can be large, so it should be stored in a separate file
-try {
-    xmlContents = new File("${configPath}/${samlConfigs.IDP_METADATA_PATH}").text
-    idpMetadata = new IdpMetadataConfiguration(xmlContents)
-} catch (FileNotFoundException e) {
-    logger.severe("Cannot find file path @ ${configPath}/${samlConfigs.IDP_METADATA_PATH}")
-    jenkins.doSafeExit(null)
-    System.exit(1)
-}
-
+IdpMetadataConfiguration idpMetadata = new IdpMetadataConfiguration(samlConfigs.IDP_METADATA_PATH)
 int maximumAuthenticationLifetime = samlConfigs.MAX_AUTH_LIFETIME.toInteger()
 
 if (!samlConfigs.ADVANCED_CONFIGURATION.isEmpty()) {

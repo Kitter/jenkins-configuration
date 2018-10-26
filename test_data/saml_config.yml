@@ -1,5 +1,6 @@
 ---
-IDP_METADATA_PATH: 'xml/idp_metadata.xml'
+IDP_METADATA_PATH: |
+    <xml> this is some idp xml data </xml>
 DISPLAY_NAME_ATTRIBUTE: 'def'
 GROUP_ATTRIBUTE: 'ghi'
 MAX_AUTH_LIFETIME: 10

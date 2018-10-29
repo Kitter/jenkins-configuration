@@ -28,11 +28,15 @@ class SecurityConfigurationPage(PageObject):
 
     def is_gh_oauth_enabled(self):
         """
-        return true if he `GitHub Web URI` field is present, which will only
+        return true if the `GitHub Web URI` field is present, which will only
         appear when GH OAuth is selected, rather than the GH OAuth radio button,
         which has no unique CSS identifier
         """
         return self.q(css='[name="_.githubWebUri"]').visible
+
+
+    def is_saml_enabled(self):
+        return self.q(css='[name="idpMetadataConfiguration"]').visible
 
     def get_user_permissions(self, user):
         """

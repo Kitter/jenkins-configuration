@@ -13,3 +13,6 @@ export JENKINS_WAR_SOURCE='https://s3.amazonaws.com/edx-testeng-tools/jenkins'
 
 export JENKINS_VERSION='jenkins_2.89.4'
 export CONTAINER_NAME='jenkins'
+
+# NOTES!
+# export AUTH_MECHANISM='here'

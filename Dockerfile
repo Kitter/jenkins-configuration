@@ -41,7 +41,7 @@ RUN mkdir -p $JENKINS_HOME/init.groovy.d \
     && mkdir $JENKINS_HOME/git \
     && mkdir -p /var/log/jenkins
 COPY src/main/groovy/*.groovy $JENKINS_HOME/init.groovy.d/
-COPY src/main/groovy/${AUTH_MECHANISM}/*.groovy $JENKINS_HOME/init.groovy.d/
+COPY src/main/groovy/$AUTH_MECHANISM/*.groovy $JENKINS_HOME/init.groovy.d/
 COPY plugins $JENKINS_HOME/plugins/
 COPY utils/ $JENKINS_HOME/utils/
 COPY ${CONFIG_PATH} $JENKINS_HOME/init-configs/

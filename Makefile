@@ -36,6 +36,7 @@ clean.ws:
 
 build:
 	docker build -t $(CONTAINER_NAME) --build-arg=CONFIG_PATH=$(CONFIG_PATH) \
+		--build-arg=AUTH_MECHANISM=$(AUTH_MECHANISM) \
 		--build-arg=JENKINS_VERSION=$(JENKINS_VERSION) \
 		--build-arg=JENKINS_WAR_SOURCE=$(JENKINS_WAR_SOURCE) .
 

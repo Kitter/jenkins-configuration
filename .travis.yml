@@ -1,11 +1,9 @@
 language: groovy
-env:
-    - JENKINS_VERSION='jenkins_2.89.4'
 
 matrix:
   include:
-  - env: AUTH_MECHANISM=oauth
-  - env: AUTH_MECHANISM=saml
+  - env: AUTH_MECHANISM=oauth JENKINS_VERSION='jenkins_2.89.4'
+  - env: AUTH_MECHANISM=saml JENKINS_VERSION='jenkins_2.89.4'
 
 dist: trusty
 sudo: required

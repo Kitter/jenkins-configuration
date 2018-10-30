@@ -36,7 +36,8 @@ class SecurityConfigurationPage(PageObject):
 
 
     def is_saml_enabled(self):
-        return self.q(css='[name="idpMetadataConfiguration"]').visible
+        css_query = '[checkurl="/descriptorByName/org.jenkinsci.plugins.saml.IdpMetadataConfiguration/checkXml"]'
+        return self.q(css=css_query).visible
 
     def get_user_permissions(self, user):
         """

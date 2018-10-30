@@ -7,6 +7,8 @@ import pytest
 from bok_choy.web_app_test import WebAppTest
 from pages.security_page import SecurityConfigurationPage
 
+auth_mechanism = os.getenv('AUTH_MECHANISM')
+
 class TestSecurityConfiguration(WebAppTest):
 
     def setUp(self):
@@ -27,7 +29,6 @@ class TestSecurityConfiguration(WebAppTest):
         self.security_config = yaml.safe_load(security_yaml_contents)
         self.main_config = yaml.safe_load(main_yaml_contents)
         self.security_page = SecurityConfigurationPage(self.browser)
-        self.auth_mechanism = os.getenv('AUTH_MECHANISM')
 
     def test_security(self):
         self.security_page.visit()
@@ -39,12 +40,12 @@ class TestSecurityConfiguration(WebAppTest):
         assert self.security_config['DSL_SCRIPT_SECURITY_ENABLED'] == self.security_page.is_dsl_script_security_enabled()
         assert self.security_config['CSRF_PROTECTION_ENABLED'] == self.security_page.is_csrf_protection_enabled()
 
-    @pytest.mark.skipif(self.auth_mechanism != 'oauth')
+    @pytest.mark.skipif(auth_mechanism != 'oauth')
     def test_gh_oauth_enabled(self):
         self.security_page.visit()
         assert self.security_page.is_gh_oauth_enabled()
 
-    @pytest.mark.skipif(self.auth_mechanism != 'saml')
+    @pytest.mark.skipif(auth_mechanism != 'saml')
     def test_saml_enabled(self):
         self.security_page.visit()
         assert self.security_page.is_saml_enabled()

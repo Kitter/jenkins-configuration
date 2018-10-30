@@ -40,12 +40,12 @@ class TestSecurityConfiguration(WebAppTest):
         assert self.security_config['DSL_SCRIPT_SECURITY_ENABLED'] == self.security_page.is_dsl_script_security_enabled()
         assert self.security_config['CSRF_PROTECTION_ENABLED'] == self.security_page.is_csrf_protection_enabled()
 
-    @pytest.mark.skipif(auth_mechanism != 'oauth')
+    @pytest.mark.skipif(auth_mechanism != 'oauth', reason='this is an oauth test')
     def test_gh_oauth_enabled(self):
         self.security_page.visit()
         assert self.security_page.is_gh_oauth_enabled()
 
-    @pytest.mark.skipif(auth_mechanism != 'saml')
+    @pytest.mark.skipif(auth_mechanism != 'saml', reason='this is a saml test')
     def test_saml_enabled(self):
         self.security_page.visit()
         assert self.security_page.is_saml_enabled()

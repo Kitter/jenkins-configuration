@@ -69,6 +69,7 @@ if (!conventions.contains(samlConfigs.USERNAME_CASE_CONVENTION)) {
     System.exit(1)
 }
 
+String binding = ''
 if (samlConfigs.BINDING == 'POST') {
     binding = SAML2_POST_BINDING_URI.toString()
 } else if (samlConfigs == 'REDIRECT') {

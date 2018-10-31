@@ -30,6 +30,9 @@ Before running anything the following environment variables must be set:
     - PLUGIN_CONFIG -> path the yml config file containing the desired plugin
         version names and versions to be installed prior to Jenkins initialization
     - CONTAINER_NAME -> name of the docker container that gets created
+    - AUTH_MECHANISM -> choice of method used to authenticate into the Jenkins
+        server. Jenkins can only have one method configured. Currently supported
+        methods include `saml` and `oauth`.
 
 This can be done by copying local_env.sample.sh, making the modifications you
 need, and running:

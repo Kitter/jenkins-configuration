@@ -36,6 +36,11 @@ class SecurityConfigurationPage(PageObject):
 
 
     def is_saml_enabled(self):
+        """
+        return true if the `IdpMetadataConfiguration/checkXml` field is present,
+        which will only appear when SAML is selected, rather than the SAML radio button,
+        which has no unique CSS identifier
+        """
         css_query = '[checkurl="/descriptorByName/org.jenkinsci.plugins.saml.IdpMetadataConfiguration/checkXml"]'
         return self.q(css=css_query).visible
 

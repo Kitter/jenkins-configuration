@@ -10,6 +10,10 @@ import org.jenkinsci.plugins.saml.SamlSecurityRealm
 import org.jenkinsci.plugins.saml.SamlAdvancedConfiguration
 import org.jenkinsci.plugins.saml.SamlEncryptionData
 import org.jenkinsci.plugins.saml.IdpMetadataConfiguration
+import org.jenkinsci.plugins.saml.conf.AttributeEntry
+import org.jenkinsci.plugins.saml.conf.Attribute
+import static org.opensaml.saml.common.xml.SAMLConstants.SAML2_POST_BINDING_URI
+import static org.opensaml.saml.common.xml.SAMLConstants.SAML2_REDIRECT_BINDING_URI
 
 @Grapes([
     @Grab(group='org.yaml', module='snakeyaml', version='1.17')
@@ -32,8 +36,8 @@ try {
 
 samlConfigs = yaml.load(configText)
 
-IdpMetadataConfiguration idpMetadata = new IdpMetadataConfiguration(samlConfigs.IDP_METADATA_PATH)
-int maximumAuthenticationLifetime = samlConfigs.MAX_AUTH_LIFETIME.toInteger()
+IdpMetadataConfiguration idpMetadata = new IdpMetadataConfiguration(samlConfigs.IDP_METADATA)
+int maximumAuthenticationLifetime = samlConfigs.MAX_AUTH_LIFETIME_SECONDS.toInteger()
 
 if (!samlConfigs.ADVANCED_CONFIGURATION.isEmpty()) {
     advancedConfiguration = new SamlAdvancedConfiguration(
@@ -60,9 +64,25 @@ if (!samlConfigs.ENCRYPTION_DATA.isEmpty()) {
 
 ArrayList<String> conventions = ['none', 'lowercase', 'uppercase']
 if (!conventions.contains(samlConfigs.USERNAME_CASE_CONVENTION)) {
-    logger.severe("USERNAME_CASE_CONVETION must be one of ${conventions}")
+    logger.severe("USERNAME_CASE_CONVENTION must be one of ${conventions}")
     jenkins.doSafeExit(null)
     System.exit(1)
+}
+
+if (samlConfigs.BINDING == 'POST') {
+    binding = SAML2_POST_BINDING_URI.toString()
+} else if (samlConfigs == 'REDIRECT') {
+    binding = SAML2_REDIRECT_BINDING_URI.toString()
+} else {
+    logger.severe("Invalid binding ${samlConfigs.BINDING}. Options are: 'POST' and 'REDIRECT'")
+    jenkins.doSafeExit(null)
+    System.exit(1)
+}
+
+ArrayList<AttributeEntry> attributes = new ArrayList<AttributeEntry>()
+samlConfigs.SAML_CUSTOM_ATTRIBUTES.each { attr ->
+    Attribute attribute = new Attribute(attr.ATTRIBUTE_NAME, attr.ATTRIBUTE_VALUE)
+    attributes.add(attribute)
 }
 
 SamlSecurityRealm securityRealm = new SamlSecurityRealm(
@@ -76,8 +96,8 @@ SamlSecurityRealm securityRealm = new SamlSecurityRealm(
     advancedConfiguration,
     encryptionData,
     samlConfigs.USERNAME_CASE_CONVENTION,
-    samlConfigs.BINDING,
-    samlConfigs.SAML_CUSTOM_ATTRIBUTES
+    binding,
+    attributes
 )
 
 jenkins.setSecurityRealm(securityRealm)
